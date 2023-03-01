@@ -1,0 +1,8 @@
+SELECT p.product_name, s.supplier_name, c.category_name, 
+(SELECT AVG(order_price) FROM order_items WHERE product_id = p.product_id) AS avg_price, 
+(SELECT COUNT(DISTINCT o.customer_id) FROM orders o JOIN order_items i ON o.order_id = i.order_id WHERE i.product_id = p.product_id) AS unique_customers,
+(SELECT COUNT(DISTINCT o.order_id) FROM orders o JOIN order_items i ON o.order_id = i.order_id WHERE i.product_id = p.product_id) AS total_orders,
+(SELECT SUM(order_price) FROM order_items WHERE product_id = p.product_id) AS total_sales
+FROM products p 
+JOIN suppliers s ON p.supplier_id = s.supplier_id 
+JOIN categories c ON p.category_id = c.category_id;
