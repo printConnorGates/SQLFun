@@ -1,0 +1,11 @@
+SELECT c.customer_name, SUM(o.order_total) AS total_spent
+FROM customers c
+JOIN (
+  SELECT customer_id, SUM(order_total) AS order_total
+  FROM orders
+  GROUP BY customer_id
+) o ON c.customer_id = o.customer_id
+WHERE c.customer_type = 'VIP'
+GROUP BY c.customer_name
+HAVING total_spent > 10000;
+
